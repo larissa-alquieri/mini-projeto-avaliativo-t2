@@ -19,17 +19,28 @@ df = df_original.copy()
 #REMOÇÃO DE COLUNAS NULAS
 colunas_nulas = ['Unnamed: 10', 'Unnamed: 11', 'Unnamed: 12', 'Unnamed: 13']
 df.drop(columns=colunas_nulas, inplace=True)
+print("Col. Nulas ok")
 
 #DEIXANDO AS COLUNAS COM AS ESCRITAS DA MESMA MANEIRA
 colunas_texto = ['CL_GENERO', 'CL_SEG', 'PR_CAT', 'PR_NOME']
 for col in colunas_texto:
     df[col] = df[col].astype(str).str.strip().str.upper()
-
+print("Col. Textos ok")
 
 colunas_inteiras = ['CO_ID', 'CL_ID', 'CL_EC', 'CL_FHL', 'PR_ID']
 for col in colunas_inteiras:
     df[col] = df[col].astype('int64')
+print("Col.Inteiras ok")
 
+#REMOÇÃO DE DUPLICADOS
+duplicados_qtd = df.duplicated().sum()
+if duplicados_qtd > 0:
+    df.drop_duplicates(inplace=True)
+print("Duplicados ok")
+
+#TRANSFORMAÇÃO DA COLUNA DATA EM FORMATO ADEQUADO DE DATA
+df['DATA'] = pd.to_datetime(df['DATA'], format='%d/%m/%Y', errors='coerce')
+print("Data ok")
 
 
 
